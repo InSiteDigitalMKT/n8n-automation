@@ -62,11 +62,9 @@ n8n.insitemarketing.com.br {
 }
 
 evolution.insitemarketing.com.br {
-
-    handle_path * {
+    
         rewrite * /manager{uri}
         reverse_proxy evolution_api:8080
-    }
 }
 
 baserow.insitemarketing.com.br {
