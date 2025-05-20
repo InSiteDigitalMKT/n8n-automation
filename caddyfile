@@ -56,3 +56,15 @@
 
     reverse_proxy {$PRIVATE_WEB_FRONTEND_URL:localhost:3000}
 }
+
+n8n.insitemarketing.com.br {
+    reverse_proxy n8n:5678
+}
+
+evolution.insitemarketing.com.br {
+
+    handle_path * {
+        rewrite * /manager{uri}
+        reverse_proxy evolution_api/manager:3000
+    }
+}
