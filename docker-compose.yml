@@ -3,7 +3,7 @@ version: "3.8"
 x-backend-variables:
   &backend-variables # Most users should only need to set these first four variables.
   SECRET_KEY: b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACAdxNCcL23Fwc49mvqxyvJz/fa7FtJS3LqMf3x57TZHtgAAAIj4RcRt+EXEbQAAAAtzc2gtZWQyNTUxOQAAACAdxNCcL23Fwc49mvqxyvJz/fa7FtJS3LqMf3x57TZHtgAAAEA1ALwDWP99b48G3aubAxcwJ+Wv8y5edBuHulzB8yVs4R3E0JwvbcXBzj2a+rHK8nP99rsW0lLcuox/fHntNke2AAAAAAECAwQF
-  BASEROW_PUBLIC_URL: baserow.insitemarketing.digital
+  BASEROW_PUBLIC_URL: https://baserow.insitemarketing.digital
   # If you manually change this line make sure you also change the duplicate line in
   # the web-frontend service.
 
@@ -201,8 +201,8 @@ services:
       retries: 10
     networks:
       - evolution-net
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
 
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
@@ -220,6 +220,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    expose:
+      - 5678
 
   evolution_api:
     image: atendai/evolution-api:latest
@@ -227,8 +229,6 @@ services:
     depends_on:
       - redis
       - postgres
-    ports:
-      - 8080:8080
     volumes:
       - evolution_instances:/evolution/instances
     networks:
@@ -246,8 +246,8 @@ services:
       redis-server --port 6379 --appendonly yes
     volumes:
       - evolution_redis:/data
-    ports:
-      - 6379:6379
+    expose:
+      - 6379
 
   web-frontend:
     image: baserow/web-frontend:latest
@@ -284,10 +284,10 @@ services:
       BASEROW_PREMIUM_GROUPED_AGGREGATE_SERVICE_MAX_AGG_BUCKETS:
     depends_on:
       - backend
-    ports:
-      - 3000:3000
     networks:
       - evolution-net
+    expose:
+      - 3000
 
   celery:
     image: baserow/backend:latest
@@ -345,10 +345,9 @@ services:
     image: caddy:2
     restart: unless-stopped
     environment:
-      BASEROW_CADDY_ADDRESSES: ${BASEROW_CADDY_ADDRESSES:- :80}
       PRIVATE_WEB_FRONTEND_URL: ${PRIVATE_WEB_FRONTEND_URL:-http://web-frontend:3000}
       PRIVATE_BACKEND_URL: ${PRIVATE_BACKEND_URL:-http://backend:8000}
-      BASEROW_PUBLIC_URL: ${BASEROW_PUBLIC_URL:-http://localhost:80}
+      BASEROW_PUBLIC_URL: ${BASEROW_PUBLIC_URL:- https://baserow.insitemarketing.digital}
     ports:
       - "80:80"
       - "443:443"
@@ -375,6 +374,8 @@ services:
       - media:/baserow/media
     networks:
       - evolution-net
+    expose:
+      - 8000
 
   volume-permissions-fixer:
     image: bash:4.4

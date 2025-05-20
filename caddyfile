@@ -1,15 +1,13 @@
-{
-	on_demand_tls {
-        ask {$PRIVATE_BACKEND_URL:localhost:8000}/api/builder/domains/ask-public-domain-exists/
-    }
+n8n.insitemarketing.digital {
+    reverse_proxy n8n:5678
+}
 
-    {$BASEROW_CADDY_GLOBAL_CONF}
+evolution.insitemarketing.digital {
+        rewrite * /manager{uri}
+        reverse_proxy evolution_api:8080
 }
 
 {$BASEROW_CADDY_ADDRESSES} {
-    tls {
-        on_demand
-    }
 
     @is_baserow_tool {
         expression "{$BASEROW_PUBLIC_URL}".contains({http.request.host})
@@ -17,15 +15,15 @@
 
     handle @is_baserow_tool {
         handle /api/* {
-            reverse_proxy {$PRIVATE_BACKEND_URL:localhost:8000}
+            reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
         }
 
         handle /ws/* {
-            reverse_proxy {$PRIVATE_BACKEND_URL:localhost:8000}
+            reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
         }
 
         handle /mcp/* {
-            reverse_proxy {$PRIVATE_BACKEND_URL:localhost:8000}
+            reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
         }
 
         handle_path /media/* {
@@ -34,9 +32,8 @@
             }
             header @downloads Content-disposition "attachment; filename={query.dl}"
 
-            # Allow to call head from public url to get size
             header {
-                Access-Control-Allow-Origin {$BASEROW_PUBLIC_URL:http://localhost}
+                Access-Control-Allow-Origin {$BASEROW_PUBLIC_URL}
                 Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
                 Access-Control-Allow-Headers "*"
                 Access-Control-Expose-Headers "Content-Length, Content-Type"
@@ -54,19 +51,6 @@
         }
     }
 
-    reverse_proxy {$PRIVATE_WEB_FRONTEND_URL:localhost:3000}
-}
+    reverse_proxy {$PRIVATE_WEB_FRONTEND_URL:web-frontend:3000}
 
-n8n.insitemarketing.digital {
-    reverse_proxy n8n:5678
-}
-
-evolution.insitemarketing.digital {
-
-        rewrite * /manager{uri}
-        reverse_proxy evolution_api:8080
-}
-
-baserow.insitemarketing.digital {
-    reverse_proxy web-frontend:3000
 }
