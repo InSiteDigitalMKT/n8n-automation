@@ -3,7 +3,7 @@ version: "3.8"
 x-backend-variables:
   &backend-variables # Most users should only need to set these first four variables.
   SECRET_KEY: b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACAdxNCcL23Fwc49mvqxyvJz/fa7FtJS3LqMf3x57TZHtgAAAIj4RcRt+EXEbQAAAAtzc2gtZWQyNTUxOQAAACAdxNCcL23Fwc49mvqxyvJz/fa7FtJS3LqMf3x57TZHtgAAAEA1ALwDWP99b48G3aubAxcwJ+Wv8y5edBuHulzB8yVs4R3E0JwvbcXBzj2a+rHK8nP99rsW0lLcuox/fHntNke2AAAAAAECAwQF
-  BASEROW_PUBLIC_URL: baserow.insitemarketing.com.br
+  BASEROW_PUBLIC_URL: baserow.insitemarketing.digital
   # If you manually change this line make sure you also change the duplicate line in
   # the web-frontend service.
 
