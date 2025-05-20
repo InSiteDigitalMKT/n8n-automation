@@ -181,7 +181,7 @@ volumes:
   media:
   caddy_config:
   caddy_data:
-  ./Caddyfile:/etc/caddy/Caddyfile:
+  ./Caddyfile:
 
 services:
   postgres:
