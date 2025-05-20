@@ -179,9 +179,9 @@ volumes:
   postgres_data:
   baserow_data:
   media:
-  caddy_config:
-  caddy_data:
-  Caddyfile:
+  ./Caddyfile:/etc/caddy/Caddyfile:
+  Caddy_config:/config:
+  caddy_data:/data:
 services:
   postgres:
     image: postgres:16
