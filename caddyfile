@@ -9,11 +9,6 @@ evolution.insitemarketing.digital {
 
 baserow.insitemarketing.digital {
 
-    @is_baserow_tool {
-        expression "{$BASEROW_PUBLIC_URL}".contains({http.request.host})
-    }
-
-    handle @is_baserow_tool {
         handle /api/* {
             reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
         }
@@ -33,7 +28,7 @@ baserow.insitemarketing.digital {
             header @downloads Content-disposition "attachment; filename={query.dl}"
 
             header {
-                Access-Control-Allow-Origin {$BASEROW_PUBLIC_URL}
+                Access-Control-Allow-Origin "https://baserow.insitemarketing.digital"
                 Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
                 Access-Control-Allow-Headers "*"
                 Access-Control-Expose-Headers "Content-Length, Content-Type"
@@ -49,8 +44,6 @@ baserow.insitemarketing.digital {
                 root {$STATIC_ROOT:/baserow/static/}
             }
         }
-    }
 
     reverse_proxy {$PRIVATE_WEB_FRONTEND_URL:web-frontend:3000}
-
 }
