@@ -65,6 +65,10 @@ evolution.insitemarketing.com.br {
 
     handle_path * {
         rewrite * /manager{uri}
-        reverse_proxy evolution_api/manager:3000
+        reverse_proxy evolution_api:8080
     }
+}
+
+baserow.insitemarketing.com.br {
+    reverse_proxy web-frontend:3000
 }
