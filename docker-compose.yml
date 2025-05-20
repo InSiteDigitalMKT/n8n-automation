@@ -181,8 +181,7 @@ volumes:
   media:
   caddy_config:
   caddy_data:
-  ./Caddyfile:
-
+  Caddyfile:
 services:
   postgres:
     image: postgres:16
