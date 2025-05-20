@@ -354,6 +354,8 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - media:/baserow/media
+      - media:/n8n/media
+      - media:/evolution/media
       - caddy_config:/config
       - caddy_data:/data
     networks:
