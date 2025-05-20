@@ -353,7 +353,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddyfile:/etc/caddy/Caddyfile
       - media:/baserow/media
       - media:/n8n/media
       - media:/evolution/media
