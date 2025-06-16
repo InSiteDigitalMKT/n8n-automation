@@ -1,59 +1,29 @@
-{
-}
-
 n8n.insitemarketing.digital {
+        
     reverse_proxy n8n:5678
 }
 
 evolution.insitemarketing.digital {
-        rewrite * /manager{uri}
-        reverse_proxy evolution_api:8080
+
+    redir / /manager 308
+    
+    reverse_proxy evolution_api:8080
 }
 
-{$BASEROW_CADDY_ADDRESSES} {
+# # baserow.insitemarketing.digital {
 
-    @is_baserow_tool {
-        expression "{$BASEROW_PUBLIC_URL}".contains({http.request.host})
-    }
+# #         handle /api/* {
+# #             reverse_proxy backend:8000
+# #         }
 
-    handle @is_baserow_tool {
-        handle /api/* {
-            reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
-        }
+# #         handle /ws/* {
+# #             reverse_proxy backend:8000
+# #         }
 
-        handle /ws/* {
-            reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
-        }
+# #         handle /mcp/* {
+# #             reverse_proxy backend:8000
+# #         }
 
-        handle /mcp/* {
-            reverse_proxy {$PRIVATE_BACKEND_URL:backend:8000}
-        }
+# #     reverse_proxy frontend:3000
 
-        handle_path /media/* {
-            @downloads {
-                query dl=*
-            }
-            header @downloads Content-disposition "attachment; filename={query.dl}"
-
-            header {
-                Access-Control-Allow-Origin {$BASEROW_PUBLIC_URL}
-                Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
-                Access-Control-Allow-Headers "*"
-                Access-Control-Expose-Headers "Content-Length, Content-Type"
-            }
-
-            file_server {
-                root {$MEDIA_ROOT:/baserow/media/}
-            }
-        }
-
-        handle_path /static/* {
-            file_server {
-                root {$STATIC_ROOT:/baserow/static/}
-            }
-        }
-    }
-
-    reverse_proxy {$PRIVATE_WEB_FRONTEND_URL:web-frontend:3000}
-
-}
+# # }
