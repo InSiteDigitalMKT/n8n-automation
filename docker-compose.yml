@@ -366,6 +366,7 @@ services:
       - evolution-net
     expose:
       - 9000
+    privileged: true
 
   # backend:
   #   image: baserow/backend:1.33.3
