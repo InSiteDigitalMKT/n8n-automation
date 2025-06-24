@@ -176,6 +176,7 @@ volumes:
   caddy_config:
   caddy_data:
   docker-postgresql-multiple-databases:
+  portainer_data:
   
 services:
   postgres:
@@ -197,16 +198,14 @@ services:
       retries: 10
     networks:
       - evolution-net
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
 
   n8n:
     image: docker.n8n.io/n8nio/n8n:1.95.2
     restart: always
     env_file:
       - .env
-    ports:
-      - 5678:5678
     links:
       - postgres
     volumes:
@@ -227,8 +226,6 @@ services:
       - postgres
     volumes:
       - evolution_instances:/evolution/instances
-    ports:
-      - 8080:8080
     networks:
       - evolution-net
     env_file:
@@ -351,11 +348,24 @@ services:
       - ./caddyfile:/etc/caddy/Caddyfile
       - media:/n8n/media
       - media:/evolution/media
+      - media:/portainer/media
       - caddy_config:/config
       - caddy_data:/data
       - ./certs:/certs:ro
     networks:
       - evolution-net
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:2.31.1-alpine
+    restart: always
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - evolution-net
+    expose:
+      - 9000
 
   # backend:
   #   image: baserow/backend:1.33.3
@@ -385,3 +395,4 @@ networks:
   evolution-net:
     name: evolution-net
     driver: bridge
+    external: false

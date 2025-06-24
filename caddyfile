@@ -1,13 +1,19 @@
 n8n.insitemarketing.digital {
         
     reverse_proxy n8n:5678
+    
 }
 
 evolution.insitemarketing.digital {
 
-    redir / /manager 308
-    
     reverse_proxy evolution_api:8080
+
+}
+
+portainer.insitemarketing.digital {
+
+    reverse_proxy portainer:9000
+
 }
 
 # # baserow.insitemarketing.digital {
