@@ -4,9 +4,21 @@ n8n.insitemarketing.digital {
     
 }
 
+n8n-teste.insitemarketing.digital {
+        
+    reverse_proxy n8n-teste:5678
+    
+}
+
 evolution.insitemarketing.digital {
 
     reverse_proxy evolution_api:8080
+
+}
+
+evolution-teste.insitemarketing.digital {
+
+    reverse_proxy evolution_api-teste:8080
 
 }
 
